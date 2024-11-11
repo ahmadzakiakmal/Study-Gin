@@ -28,7 +28,15 @@ func main() {
 		if err != nil {
 			fmt.Println(err)
 			c.JSON(415, map[string]interface{}{
-				"error": "invalid JSON",
+				"error": err.Error(),
+			})
+			return
+		}
+		result := initializers.DB.Create(&body)
+		fmt.Println(result.Error)
+		if result.Error != nil {
+			c.JSON(400, map[string]interface{}{
+				"message": result.Error.Error(),
 			})
 			return
 		}
